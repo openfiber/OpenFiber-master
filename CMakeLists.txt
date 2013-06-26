@@ -37,14 +37,10 @@ FILE(WRITE ${CMAKE_BINARY_DIR}/version.txt ${VERSION})
 SET(SOURCES
     src/main.cpp
     src/mainwindow.cpp
-
-    src/misc/utils.cpp
 )
 
 SET(HEADERS_MOC
     src/mainwindow.h
-
-    src/misc/utils.h
 )
 
 SET(UIS
@@ -52,26 +48,12 @@ SET(UIS
 )
 
 SET(RESOURCES
-    res/common.qrc
-    res/ui.qrc
 )
 
 # Various include directories
 
 INCLUDE_DIRECTORIES(
 )
-
-#Update the translation (.ts) files and generate the language (.qm) files
-# which will later on be embedded in the executable as resources
-
-UPDATE_LANGUAGE_FILES(${PROJECT_NAME} FALSE)
-
-# Set the application icon, but only for Windows, since in the case of
-# Linux, it's done through res/OpenFiber.qrc
-
-IF(WIN32)
-    LIST(APPEND SOURCES ${CMAKE_SOURCE_DIR}/res/${PROJECT_NAME}.rc)
-ENDIF()
 
 # Build the GUI version of OpenFiber
 
