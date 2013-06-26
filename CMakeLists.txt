@@ -55,6 +55,13 @@ SET(RESOURCES
 INCLUDE_DIRECTORIES(
 )
 
+# Set the application icon, but only for Windows and OS X, since in the case of
+# Linux, it's done through res/OpenCOR.qrc
+
+IF(WIN32)
+    LIST(APPEND SOURCES ${CMAKE_SOURCE_DIR}/res/${PROJECT_NAME}.rc)
+ENDIF()
+
 # Build the GUI version of OpenFiber
 
 QT5_WRAP_CPP(SOURCES_MOC ${HEADERS_MOC})
