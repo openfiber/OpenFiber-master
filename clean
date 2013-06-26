@@ -1,0 +1,9 @@
+#!/bin/sh
+
+OS=`uname -s`
+
+echo "\033[44;37;1mCleaning OpenFiber...\033[0m"
+
+rm -fr build/* > /dev/null 2>&1
+
+echo "\033[42;37;1mAll done!\033[0m"

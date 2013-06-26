@@ -1,0 +1,23 @@
+#!/bin/sh
+
+OS=`uname -s`
+
+echo "\033[44;37;1mRunning OpenFiber...\033[0m"
+
+WMsg="OpenFiber must first be built before being run."
+
+if [ $OS = "Linux" ]; then
+if [ -f build/bin/OpenFiber ]; then
+build/bin/OpenFiber "$@"
+    else
+echo $WMsg
+    fi
+else
+if [ -d build/OpenFiber.app ]; then
+build/OpenFiber.app/Contents/MacOS/OpenFiber "$@"
+    else
+echo $WMsg
+    fi
+fi
+
+echo "\033[42;37;1mAll done!\033[0m"
