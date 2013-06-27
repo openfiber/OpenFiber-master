@@ -37,6 +37,10 @@
      <property name="title">
       <string>&amp;Language</string>
      </property>
+     <property name="icon">
+      <iconset resource="../res/ui.qrc">
+       <normaloff>:/oxygen/categories/applications-education-language.png</normaloff>:/oxygen/categories/applications-education-language.png</iconset>
+     </property>
      <addaction name="actionEnglish"/>
      <addaction name="actionRussian"/>
     </widget>
@@ -66,37 +70,96 @@
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionExit">
+   <property name="icon">
+    <iconset resource="../res/ui.qrc">
+     <normaloff>:/oxygen/actions/application-exit.png</normaloff>:/oxygen/actions/application-exit.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;Exit</string>
    </property>
+   <property name="statusTip">
+    <string>Exit OpenFiber</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
   </action>
   <action name="actionEnglish">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../res/ui.qrc">
+     <normaloff>:/flags/en.png</normaloff>:/flags/en.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;English</string>
    </property>
+   <property name="statusTip">
+    <string>Select English as the language used by OpenFiber</string>
+   </property>
   </action>
   <action name="actionRussian">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../res/ui.qrc">
+     <normaloff>:/flags/ru.png</normaloff>:/flags/ru.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;Russian</string>
    </property>
+   <property name="statusTip">
+    <string>Select Russian as the language used by OpenFiber</string>
+   </property>
   </action>
   <action name="actionHelp">
+   <property name="icon">
+    <iconset resource="../res/ui.qrc">
+     <normaloff>:/oxygen/categories/system-help.png</normaloff>:/oxygen/categories/system-help.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;Help</string>
    </property>
+   <property name="statusTip">
+    <string>Look up the OpenFiber help</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
+   </property>
   </action>
   <action name="actionHomePage">
+   <property name="icon">
+    <iconset resource="../res/ui.qrc">
+     <normaloff>:/oxygen/categories/applications-internet.png</normaloff>:/oxygen/categories/applications-internet.png</iconset>
+   </property>
    <property name="text">
     <string>Home &amp;Page</string>
    </property>
+   <property name="statusTip">
+    <string>Look up the OpenFiber home page</string>
+   </property>
   </action>
   <action name="actionAbout">
+   <property name="icon">
+    <iconset resource="../res/ui.qrc">
+     <normaloff>:/oxygen/actions/help-about.png</normaloff>:/oxygen/actions/help-about.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;About</string>
+   </property>
+   <property name="statusTip">
+    <string>Some general information about OpenFiber</string>
    </property>
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="../res/ui.qrc"/>
+ </resources>
  <connections/>
 </ui>

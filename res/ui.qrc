@@ -1,5 +1,12 @@
 <RCC>
     <qresource prefix="/">
         <file alias="appIcon">icon/OpenFiber.png</file>
+        <file>flags/en.png</file>
+        <file>flags/ru.png</file>
+        <file>oxygen/actions/application-exit.png</file>
+        <file>oxygen/actions/help-about.png</file>
+        <file>oxygen/categories/applications-education-language.png</file>
+        <file>oxygen/categories/applications-internet.png</file>
+        <file>oxygen/categories/system-help.png</file>
     </qresource>
 </RCC>
