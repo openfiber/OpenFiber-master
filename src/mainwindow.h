@@ -18,6 +18,13 @@ public:
 private:
     Ui::MainWindow *ui;
 
+    QString locale;
+
+    void loadSettings();
+    void saveSettings();
+
+    void setLocale(const QString& newLocale);
+
     void notYetImplemented(const QString& message);
 
 private slots:

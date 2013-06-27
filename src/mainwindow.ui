@@ -138,7 +138,7 @@
      <normaloff>:/oxygen/categories/applications-internet.png</normaloff>:/oxygen/categories/applications-internet.png</iconset>
    </property>
    <property name="text">
-    <string>Home &amp;Page</string>
+    <string>Home &amp;page</string>
    </property>
    <property name="statusTip">
     <string>Look up the OpenFiber home page</string>
