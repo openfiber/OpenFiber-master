@@ -17,6 +17,16 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
+    void notYetImplemented(const QString& message);
+
+private slots:
+    void on_actionExit_triggered();
+    void on_actionEnglish_triggered();
+    void on_actionRussian_triggered();
+    void on_actionHelp_triggered();
+    void on_actionHomePage_triggered();
+    void on_actionAbout_triggered();
 };
 
 #endif // MAINWINDOW_H
