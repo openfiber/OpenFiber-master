@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "utils.h"
 
 #ifdef Q_WS_WIN
     #include <windows.h>
@@ -116,14 +117,22 @@ void MainWindow::on_actionHelp_triggered()
     notYetImplemented("MainWindow::on_actionHelp_triggered");
 }
 
+static const QString OpenfiberHomePageUrl = "https://github.com/openfiber";
+
 void MainWindow::on_actionHomePage_triggered()
 {
-    // Look up the OpenFiber home page
+    // Look up OpenFiber's home page
 
-    QDesktopServices::openUrl(QUrl("https://github.com/openfiber"));
+    QDesktopServices::openUrl(QUrl(OpenfiberHomePageUrl));
 }
 
 void MainWindow::on_actionAbout_triggered()
 {
-    notYetImplemented("MainWindow::on_actionAbout_triggered");
+    // Display some information about OpenFiber
+
+    QMessageBox::about(this, tr("About"),
+                        "<h1 align=center><strong>"+getAppVersion(qApp)+"</strong></h1>"
+                       +"<h3 align=center><em>"+getOsName()+"</em></h3>"
+                       +"<p align=center><em>"+getAppCopyright(true)+"</em></p>"
+                       +"<a href=\""+QString(OpenfiberHomePageUrl)+"\"><strong>"+"OpenFiber"+"</strong></a> "+tr("is a cross-platform modelling environment of cardiac fiber."));
 }

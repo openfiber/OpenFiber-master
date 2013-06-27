@@ -37,10 +37,14 @@ FILE(WRITE ${CMAKE_BINARY_DIR}/version.txt ${VERSION})
 SET(SOURCES
     src/main.cpp
     src/mainwindow.cpp
+
+    src/misc/utils.cpp
 )
 
 SET(HEADERS_MOC
     src/mainwindow.h
+
+    src/misc/utils.h
 )
 
 SET(UIS
@@ -54,6 +58,7 @@ SET(RESOURCES
 # Various include directories
 
 INCLUDE_DIRECTORIES(
+    src/misc
 )
 
 # Set the application icon, but only for Windows and OS X, since in the case of
