@@ -24,6 +24,80 @@ MACRO(INITIALISE_PROJECT)
     SET(QT_VERSION_MAJOR ${Qt5Widgets_VERSION_MAJOR})
     SET(QT_VERSION_MINOR ${Qt5Widgets_VERSION_MINOR})
     SET(QT_VERSION_PATCH ${Qt5Widgets_VERSION_PATCH})
+
+    IF("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+        MESSAGE("Building a debug version...")
+
+        SET(DEBUG_MODE ON)
+
+        # Default compiler settings
+
+        IF(WIN32)
+
+        ELSE()
+
+        ENDIF()
+
+        # Make sure that debugging is on for Qt
+
+        ADD_DEFINITIONS(-DQT_DEBUG)
+    ELSE()
+        MESSAGE("Building a release version...")
+
+        SET(DEBUG_MODE OFF)
+
+        # Default compiler and linker settings
+
+        IF(WIN32)
+
+        ELSE()
+
+        ENDIF()
+
+        # Make sure that debugging is off for Qt
+
+        ADD_DEFINITIONS(-DQT_NO_DEBUG)
+    ENDIF()
+
+    # Ask for Unicode to be used
+
+    ADD_DEFINITIONS(-DUNICODE)
+
+    IF(WIN32)
+        ADD_DEFINITIONS(-D_UNICODE)
+    ENDIF()
+
+    # Default location of external dependencies
+
+    IF(WIN32)
+        SET(DISTRIB_DIR windows/x86)
+    ELSEIF(APPLE)
+        SET(DISTRIB_DIR osx)
+    ELSE()
+        IF(32BIT_MODE)
+            SET(DISTRIB_DIR linux/x86)
+        ELSE()
+            SET(DISTRIB_DIR linux/x64)
+        ENDIF()
+    ENDIF()
+
+    IF(WIN32)
+        IF(DEBUG_MODE)
+            SET(DISTRIB_BINARY_DIR ${DISTRIB_DIR}/debug)
+        ELSE()
+            SET(DISTRIB_BINARY_DIR ${DISTRIB_DIR}/release)
+        ENDIF()
+    ELSE()
+        SET(DISTRIB_BINARY_DIR ${DISTRIB_DIR})
+    ENDIF()
+
+    # Set the RPATH information on Linux
+    # Note: this prevent us from having to use the uncool LD_LIBRARY_PATH...
+
+    IF(NOT WIN32 AND NOT APPLE)
+        SET(CMAKE_INSTALL_RPATH "$ORIGIN/../lib:$ORIGIN/../plugins/${PROJECT_NAME}")
+    ENDIF()
+
 ENDMACRO()
 
 MACRO(UPDATE_LANGUAGE_FILES TARGET_NAME)
