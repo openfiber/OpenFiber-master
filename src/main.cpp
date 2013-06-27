@@ -1,3 +1,4 @@
+#include "common.h"
 #include "mainwindow.h"
 #include <QApplication>
 

@@ -38,6 +38,8 @@ SET(SOURCES
     src/main.cpp
     src/mainwindow.cpp
 
+    src/misc/cliapplication.cpp
+    src/misc/common.cpp
     src/misc/utils.cpp
 )
 
