@@ -139,6 +139,8 @@ IF(WIN32)
 
     INSTALL(FILES ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}${CMAKE_EXECUTABLE_SUFFIX}
             DESTINATION bin)
+    #INSTALL(FILES ${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.com
+    #        DESTINATION bin)
 
     # MinGW files required by OpenFiber
 

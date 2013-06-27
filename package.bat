@@ -13,7 +13,7 @@ TITLE Packaging OpenFiber...
 CD build
 
 cpack -C CPackConfig.cmake
-pause>null
+
 SET ExitCode=%ERRORLEVEL%
 
 CD ..
