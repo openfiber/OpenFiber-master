@@ -53,6 +53,7 @@ SET(UIS
 
 SET(RESOURCES
     res/ui.qrc
+    res/common.qrc
 )
 
 # Various include directories
@@ -61,8 +62,8 @@ INCLUDE_DIRECTORIES(
     src/misc
 )
 
-# Set the application icon, but only for Windows and OS X, since in the case of
-# Linux, it's done through res/OpenCOR.qrc
+# Set the application icon, but only for Windows, since in the case of
+# Linux, it's done through res/OpenFiber.qrc
 
 IF(WIN32)
     LIST(APPEND SOURCES ${CMAKE_SOURCE_DIR}/res/${PROJECT_NAME}.rc)

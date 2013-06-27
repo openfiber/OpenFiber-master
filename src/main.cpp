@@ -9,10 +9,6 @@ int main(int argc, char *argv[])
 
     MainWindow win;
 
-    // Set the name of the main window to OpenCOR
-
-    win.setWindowTitle("OpenFiber");
-
     // Keep track of the main window
 
     app.setActiveWindow(&win);

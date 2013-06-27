@@ -6,7 +6,10 @@
     #include <windows.h>
 #endif
 
+#include <QCloseEvent>
 #include <QDesktopServices>
+#include <QDesktopWidget>
+#include <QFileDialog>
 #include <QMessageBox>
 #include <QSettings>
 #include <QUrl>
@@ -27,6 +30,10 @@ MainWindow::MainWindow(QWidget *parent) :
     // Retrieve our default settings
 
     loadSettings();
+
+    // Title of our main window
+
+    setWindowTitle(qApp->applicationName());
 }
 
 MainWindow::~MainWindow()
@@ -87,7 +94,7 @@ void MainWindow::notYetImplemented(const QString& message)
     // Display a warning message about a particular feature having not yet been
     // implemented
 
-    QMessageBox::warning(this, "OpenFiber", message+tr(" has not yet been implemented..."),
+    QMessageBox::warning(this, qApp->applicationName(), message+tr(" has not yet been implemented..."),
                          QMessageBox::Ok, QMessageBox::Ok);
 }
 
@@ -134,5 +141,5 @@ void MainWindow::on_actionAbout_triggered()
                         "<h1 align=center><strong>"+getAppVersion(qApp)+"</strong></h1>"
                        +"<h3 align=center><em>"+getOsName()+"</em></h3>"
                        +"<p align=center><em>"+getAppCopyright(true)+"</em></p>"
-                       +"<a href=\""+QString(OpenfiberHomePageUrl)+"\"><strong>"+"OpenFiber"+"</strong></a> "+tr("is a cross-platform modelling environment of cardiac fiber."));
+                       +"<a href=\""+QString(OpenfiberHomePageUrl)+"\"><strong>"+qApp->applicationName()+"</strong></a> "+tr("is a cross-platform modelling environment of cardiac fiber."));
 }
