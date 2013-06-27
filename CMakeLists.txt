@@ -48,6 +48,7 @@ SET(UIS
 )
 
 SET(RESOURCES
+    res/ui.qrc
 )
 
 # Various include directories
