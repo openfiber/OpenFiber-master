@@ -133,7 +133,7 @@ void MainWindow::loadSettings()
         ui->statusBar->setVisible(mSettings->value(SettingsStatusBarVisible, true).toBool());
 }
 
-void MainWindow::saveSettings()
+void MainWindow::saveSettings() const
 {
     // Keep track of the language to be used by OpenFiber
 
@@ -257,4 +257,33 @@ void MainWindow::on_actionAbout_triggered()
                        +"<h3 align=center><em>"+getOsName()+"</em></h3>"
                        +"<p align=center><em>"+getAppCopyright(true)+"</em></p>"
                        +"<a href=\""+QString(OpenfiberHomePageUrl)+"\"><strong>"+qApp->applicationName()+"</strong></a> "+tr("is a cross-platform modelling environment of cardiac fiber."));
+}
+
+void MainWindow::restart(const bool &pSaveSettings) const
+{
+    // Restart OpenFiber after saving its settings, if required
+
+    if (pSaveSettings)
+        saveSettings();
+
+    qApp->exit(NeedRestart);
+}
+
+void MainWindow::resetAll()
+{
+    if (QMessageBox::question(this, qApp->applicationName(),
+                              tr("You are about to reset <strong>all</strong> of your settings. Do you wish to proceed?"),
+                              QMessageBox::Yes|QMessageBox::No,
+                              QMessageBox::Yes) == QMessageBox::Yes ) {
+        // We want to reset everything, so clear all the user settings and
+        // restart OpenFiber (indeed, a restart will ensure that the various dock
+        // windows are, for instance, properly reset with regards to their
+        // dimensions)
+
+        mSettings->clear();
+
+        // Restart OpenFiber without first saving its settings
+
+        restart(false);
+    }
 }

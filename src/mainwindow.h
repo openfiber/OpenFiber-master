@@ -10,6 +10,10 @@ class MainWindow;
 
 class QSettings;
 
+enum {
+    NeedRestart = 1789
+};
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -17,6 +21,8 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+    void restart(const bool &pSaveSettings) const;
 
     QString locale() const;
 
@@ -31,7 +37,7 @@ private:
     QTranslator mAppTranslator;
 
     void loadSettings();
-    void saveSettings();
+    void saveSettings() const;
 
     void setLocale(const QString &pLocale, const bool &pForceSetting);
 
@@ -46,6 +52,8 @@ private slots:
     void on_actionHelp_triggered();
     void on_actionHomePage_triggered();
     void on_actionAbout_triggered();
+
+    void resetAll();
 };
 
 #endif // MAINWINDOW_H
