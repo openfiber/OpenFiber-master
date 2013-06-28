@@ -88,7 +88,39 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>System</source>
+        <source>&amp;System</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select your system&apos;s language as the language to be used by OpenFiber</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status &amp;Bar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show/hide the status bar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Full Screen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Switch to / back from full screen mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Reset All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reset all your settings</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

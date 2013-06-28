@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>936</width>
+    <height>467</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>400</width>
+     <width>936</width>
      <height>21</height>
     </rect>
    </property>
@@ -47,6 +47,8 @@
      <addaction name="actionRussian"/>
     </widget>
     <addaction name="menuLanguage"/>
+    <addaction name="separator"/>
+    <addaction name="actionResetAll"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -58,7 +60,16 @@
     <addaction name="separator"/>
     <addaction name="actionAbout"/>
    </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>&amp;View</string>
+    </property>
+    <addaction name="actionStatusBar"/>
+    <addaction name="separator"/>
+    <addaction name="actionFullScreen"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuView"/>
    <addaction name="menuTools"/>
    <addaction name="menuHelp"/>
   </widget>
@@ -167,6 +178,44 @@
    </property>
    <property name="statusTip">
     <string>Select your system's language as the language to be used by OpenFiber</string>
+   </property>
+  </action>
+  <action name="actionStatusBar">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Status &amp;Bar</string>
+   </property>
+   <property name="statusTip">
+    <string>Show/hide the status bar</string>
+   </property>
+  </action>
+  <action name="actionFullScreen">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../res/ui.qrc">
+     <normaloff>:/oxygen/actions/view-fullscreen.png</normaloff>:/oxygen/actions/view-fullscreen.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Full Screen</string>
+   </property>
+   <property name="statusTip">
+    <string>Switch to / back from full screen mode</string>
+   </property>
+  </action>
+  <action name="actionResetAll">
+   <property name="icon">
+    <iconset resource="../res/ui.qrc">
+     <normaloff>:/oxygen/actions/system-reboot.png</normaloff>:/oxygen/actions/system-reboot.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Reset All</string>
+   </property>
+   <property name="statusTip">
+    <string>Reset all your settings</string>
    </property>
   </action>
  </widget>

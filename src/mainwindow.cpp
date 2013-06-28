@@ -34,13 +34,50 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->setupUi(this);
 
+    // Title of our main window
+
+    setWindowTitle(qApp->applicationName());
+
+    // A connection to handle the status bar
+
+    connect(ui->actionStatusBar, SIGNAL(triggered(bool)),
+            statusBar(), SLOT(setVisible(bool)));
+
+    // Some connections to handle our various menu items
+
+    connect(ui->actionExit, SIGNAL(triggered()),
+            this, SLOT(close()));
+    connect(ui->actionResetAll, SIGNAL(triggered()),
+            this, SLOT(resetAll()));
+
+    // Set the shortcuts of some actions
+    // Note: we do it here, so that we can use standard shortcuts (whenever
+    //       possible)...
+
+    #if defined(Q_OS_WIN)
+        // Note: QKeySequence::Quit corresponds to Alt+F4 on Windows, but it doesn't
+        //       get shown in the menu item, not to mention that we would also like
+        //       to support Ctrl+Q, so...
+
+        ui->actionExit->setShortcuts(QList<QKeySequence>()
+                                           << QKeySequence(Qt::ALT|Qt::Key_F4)
+                                           << QKeySequence(Qt::CTRL|Qt::Key_Q));
+    #elif defined(Q_OS_LINUX)
+        ui->actionExit->setShortcut(QKeySequence::Quit);
+    #else
+        #error Unsupported platform
+    #endif
+
+        ui->actionFullScreen->setShortcut(QKeySequence::FullScreen);
+
     // Retrieve our default settings
 
     loadSettings();
 
-    // Title of our main window
+    // Initialise the checked state of our full screen action, since OpenFiber may
+    // (re)start in full screen mode
 
-    setWindowTitle(qApp->applicationName());
+    ui->actionFullScreen->setChecked(isFullScreen());
 }
 
 MainWindow::~MainWindow()
@@ -164,6 +201,16 @@ void MainWindow::on_actionExit_triggered()
     // Exit OpenFiber
 
     close();
+}
+
+void MainWindow::on_actionFullScreen_triggered()
+{
+    // Switch to / back from full screen mode
+
+    if (isFullScreen())
+        showNormal();
+     else
+        showFullScreen();
 }
 
 void MainWindow::on_actionSystem_triggered()
