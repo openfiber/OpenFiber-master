@@ -41,6 +41,8 @@
       <iconset resource="../res/ui.qrc">
        <normaloff>:/oxygen/categories/applications-education-language.png</normaloff>:/oxygen/categories/applications-education-language.png</iconset>
      </property>
+     <addaction name="actionSystem"/>
+     <addaction name="separator"/>
      <addaction name="actionEnglish"/>
      <addaction name="actionRussian"/>
     </widget>
@@ -89,7 +91,7 @@
     <bool>true</bool>
    </property>
    <property name="checked">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="icon">
     <iconset resource="../res/ui.qrc">
@@ -154,6 +156,17 @@
    </property>
    <property name="statusTip">
     <string>Some general information about OpenFiber</string>
+   </property>
+  </action>
+  <action name="actionSystem">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;System</string>
+   </property>
+   <property name="statusTip">
+    <string>Select your system's language as the language to be used by OpenFiber</string>
    </property>
   </action>
  </widget>

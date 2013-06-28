@@ -17,11 +17,21 @@
 #define SETTINGS_INSTITUTION "World"
 #define SETTINGS_LOCALE "Locale"
 #define SETTINGS_GEOMETRY "Geometry"
+//
+static const QString SettingsOrganization = "IIP";
+static const QString SettingsApplication = "OpenFiber";
+//
+static const QString SystemLocale  = "";
+static const QString EnglishLocale = "en";
+static const QString RussianLocale  = "ru";
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    // Create our settings object
+
+    mSettings = new QSettings(SettingsOrganization, SettingsApplication);
 
     // Set up the GUI
 
@@ -42,51 +52,105 @@ MainWindow::~MainWindow()
 
     saveSettings();
 
+    // Delete some internal objects
+
+    delete mSettings;
+
     // Delete the GUI
 
     delete ui;
 }
 
+static const QString SettingsGlobal               = "Global";
+static const QString SettingsLocale               = "Locale";
+static const QString SettingsGeometry             = "Geometry";
+static const QString SettingsState                = "State";
+static const QString SettingsDockedWidgetsVisible = "DockedWidgetsVisible";
+static const QString SettingsStatusBarVisible     = "StatusBarVisible";
+
 void MainWindow::loadSettings()
 {
-    QSettings settings(SETTINGS_INSTITUTION, qApp->applicationName());
+    // Retrieve and set the language to be used by OpenFiber
 
-    // Retrieve the geometry of the main window
+        setLocale(mSettings->value(SettingsLocale, SystemLocale).toString(), true);
 
-    restoreGeometry(settings.value(SETTINGS_GEOMETRY).toByteArray());
+        // Retrieve the geometry and state of the main window
 
-    // Retrieve the language to be used by OpenFiber, which by default is based
-    // on the system's locale
+        if (   !restoreGeometry(mSettings->value(SettingsGeometry).toByteArray())
+            || !restoreState(mSettings->value(SettingsState).toByteArray())) {
+            // The geometry and/or state of the main window couldn't be retrieved,
+            // so go with some default settings
 
-    setLocale(settings.value(SETTINGS_LOCALE, QLocale::system().name()).toString());
+            // Default size and position of the main window
+
+            double ratio = 1.0/13.0;
+            QRect desktopGeometry = qApp->desktop()->availableGeometry();
+            int horizSpace = ratio*desktopGeometry.width();
+            int vertSpace  = ratio*desktopGeometry.height();
+
+            setGeometry(desktopGeometry.left()+horizSpace,
+                        desktopGeometry.top()+vertSpace,
+                        desktopGeometry.width()-2*horizSpace,
+                        desktopGeometry.height()-2*vertSpace);
+        }
+
+        // Retrieve whether the status bar is to be shown
+
+        ui->statusBar->setVisible(mSettings->value(SettingsStatusBarVisible, true).toBool());
 }
 
 void MainWindow::saveSettings()
 {
-    QSettings settings(SETTINGS_INSTITUTION, qApp->applicationName());
-
-    // Keep track of the geometry of the main window
-
-    settings.setValue(SETTINGS_GEOMETRY, saveGeometry());
-
     // Keep track of the language to be used by OpenFiber
 
-    settings.setValue(SETTINGS_LOCALE, locale);
+    mSettings->setValue(SettingsLocale, mLocale);
+
+    // Keep track of the geometry and state of the main window
+
+    mSettings->setValue(SettingsGeometry, saveGeometry());
+    mSettings->setValue(SettingsState, saveState());
 }
 
-void MainWindow::setLocale(const QString& newLocale)
+QString MainWindow::locale() const
 {
-    if (newLocale != locale)
-    {
-        locale = newLocale;
+    // Return the current locale
+
+    return !mLocale.compare(SystemLocale)?
+               QLocale::system().name().left(2):
+               mLocale;
+}
+
+void MainWindow::setLocale(const QString &pLocale, const bool &pForceSetting)
+{
+
+    const QString systemLocale = QLocale::system().name().left(2);
+
+    QString oldLocale = !mLocale.compare(SystemLocale)?systemLocale:mLocale;
+    QString newLocale = !pLocale.compare(SystemLocale)?systemLocale:pLocale;
+
+    // Check whether the new locale is different from the old one and if so,
+    // then retranslate everything
+
+    if (oldLocale.compare(newLocale) || pForceSetting) {
+        // Specify the language to be used by OpenFiber
+
+        qApp->removeTranslator(&mQtTranslator);
+        mQtTranslator.load(":qt_"+newLocale);
+        qApp->installTranslator(&mQtTranslator);
+
+        qApp->removeTranslator(&mAppTranslator);
+        mAppTranslator.load(":app_"+newLocale);
+        qApp->installTranslator(&mAppTranslator);
     }
 
-    // Update the checked menu item
-    // Note: it has to be done every single time, since selecting a menu item
-    //       will automatically toggle its checked status, so...
+   // Update the checked menu item
+   // Note: it has to be done every single time, since selecting a menu item
+   //       will automatically toggle its checked status, so...
 
-    ui->actionEnglish->setChecked(newLocale.startsWith("en"));
-    ui->actionRussian->setChecked(newLocale.startsWith("ru"));
+   ui->actionSystem->setChecked(!pLocale.compare(SystemLocale));
+
+   ui->actionEnglish->setChecked(!pLocale.compare(EnglishLocale));
+   ui->actionRussian->setChecked(!pLocale.compare(RussianLocale));
 }
 
 void MainWindow::notYetImplemented(const QString& message)
@@ -105,18 +169,25 @@ void MainWindow::on_actionExit_triggered()
     close();
 }
 
+void MainWindow::on_actionSystem_triggered()
+{
+    // Select the system's language as the language used by OpenFiber
+
+    setLocale(SystemLocale, true);
+}
+
 void MainWindow::on_actionEnglish_triggered()
 {
     // Select English as the language used by OpenFiber
 
-        setLocale("en");
+    setLocale(EnglishLocale, true);
 }
 
 void MainWindow::on_actionRussian_triggered()
 {
-    // Select Russsian as the language used by OpenFiber
+    // Select Russian as the language used by OpenFiber
 
-        setLocale("ru");
+    setLocale(RussianLocale, true);
 }
 
 void MainWindow::on_actionHelp_triggered()

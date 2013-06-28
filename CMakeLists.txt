@@ -62,6 +62,7 @@ SET(RESOURCES
 
 INCLUDE_DIRECTORIES(
     src/misc
+    src/plugins
 )
 
 # Update the translation (.ts) files and generate the language (.qm) files
