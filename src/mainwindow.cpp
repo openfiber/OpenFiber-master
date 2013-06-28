@@ -14,9 +14,6 @@
 #include <QSettings>
 #include <QUrl>
 
-#define SETTINGS_INSTITUTION "World"
-#define SETTINGS_LOCALE "Locale"
-#define SETTINGS_GEOMETRY "Geometry"
 //
 static const QString SettingsOrganization = "IIP";
 static const QString SettingsApplication = "OpenFiber";
