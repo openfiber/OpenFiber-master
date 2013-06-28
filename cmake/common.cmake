@@ -111,7 +111,7 @@ MACRO(UPDATE_LANGUAGE_FILES TARGET_NAME)
     #       project, may be used, so...
 
     SET(LANGUAGE_FILES
-        ${TARGET_NAME}_fr
+        ${TARGET_NAME}_ru
     )
 
     FOREACH(LANGUAGE_FILE ${LANGUAGE_FILES})

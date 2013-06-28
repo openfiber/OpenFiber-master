@@ -64,6 +64,11 @@ INCLUDE_DIRECTORIES(
     src/misc
 )
 
+# Update the translation (.ts) files and generate the language (.qm) files
+# which will later on be embedded in the executable as resources
+
+UPDATE_LANGUAGE_FILES(${PROJECT_NAME} FALSE)
+
 # Set the application icon, but only for Windows, since in the case of
 # Linux, it's done through res/OpenFiber.qrc
 
