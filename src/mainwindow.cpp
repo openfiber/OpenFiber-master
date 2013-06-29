@@ -275,7 +275,6 @@ void MainWindow::setLocale(const QString &pLocale, const bool &pForceSetting)
    //       will automatically toggle its checked status, so...
 
    ui->actionSystem->setChecked(!pLocale.compare(SystemLocale));
-
    ui->actionEnglish->setChecked(!pLocale.compare(EnglishLocale));
    ui->actionRussian->setChecked(!pLocale.compare(RussianLocale));
 }
