@@ -24,7 +24,8 @@ static const QString RussianLocale  = "ru";
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    mLocale(QString())
 {
     // Create our settings object
 
@@ -95,6 +96,79 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::changeEvent(QEvent *pEvent)
+{
+    // Default handling of the event
+
+    QMainWindow::changeEvent(pEvent);
+
+    // Do a few more things for some changes
+
+    if (   (pEvent->type() == QEvent::LocaleChange)
+        && (ui->actionSystem->isChecked()))
+        // The system's locale has changed, so update OpenFiber's locale in case
+        // the user wants to use the system's locale
+
+        setLocale(SystemLocale,true);
+}
+
+//==============================================================================
+
+void MainWindow::closeEvent(QCloseEvent *pEvent)
+{
+    // Check with our plugins that it's OK to close
+
+    bool canClose = true;
+
+    // Close ourselves
+
+    if (canClose) {
+        // Keep track of our default settings
+        // Note: it must be done here, as opposed to the destructor, otherwise
+        //       some settings (e.g. docked windows) won't be properly saved...
+
+        saveSettings();
+
+        // Accept the event
+
+        pEvent->accept();
+    } else {
+        // Ignore the event, i.e. don't close ourselves
+
+        pEvent->ignore();
+    }
+}
+
+//==============================================================================
+
+void MainWindow::showEvent(QShowEvent *pEvent)
+{
+    // Default handling of the event
+
+    QMainWindow::showEvent(pEvent);
+
+    // Things which need to be done and can only be done once the main window is
+    // fully created
+
+    static bool firstTime = true;
+
+    if (firstTime) {
+        firstTime = false;
+
+        // The first time we show OpenFiber, we want to make sure that its menu is
+        // fine (i.e. it respects OpenFiber's settings that were loaded in the
+        // constructor). Various connections (set in the constructor) take care
+        // of this, but there is still one menu item (which tells us whether the
+        // status bar is to be shown) for which no connection can be set. So, we
+        // have to 'manually' set the status of that menu item here (as opposed
+        // to, say, the constructor), since we may need (on Windows at least)
+        // all of OpenFiber to be visible in order to be able to determine whether
+        // the status bar is visible...
+
+        ui->actionStatusBar->setChecked(statusBar()->isVisible());
+    }
+}
+
 static const QString SettingsGlobal               = "Global";
 static const QString SettingsLocale               = "Locale";
 static const QString SettingsGeometry             = "Geometry";
@@ -162,6 +236,21 @@ void MainWindow::setLocale(const QString &pLocale, const bool &pForceSetting)
     QString oldLocale = !mLocale.compare(SystemLocale)?systemLocale:mLocale;
     QString newLocale = !pLocale.compare(SystemLocale)?systemLocale:pLocale;
 
+    // Keep track of the new locale, if needed
+
+    if (pLocale.compare(mLocale) || pForceSetting) {
+        mLocale = pLocale;
+
+        // Also keep a copy of the new locale in our global settings (so that it
+        // can be retrieved from any plugin)
+
+        QSettings settings(SettingsOrganization, SettingsApplication);
+
+        settings.beginGroup(SettingsGlobal);
+            settings.setValue(SettingsLocale, locale());
+        settings.endGroup();
+    }
+
     // Check whether the new locale is different from the old one and if so,
     // then retranslate everything
 
@@ -175,6 +264,10 @@ void MainWindow::setLocale(const QString &pLocale, const bool &pForceSetting)
         qApp->removeTranslator(&mAppTranslator);
         mAppTranslator.load(":app_"+newLocale);
         qApp->installTranslator(&mAppTranslator);
+
+        // Retranslate OpenFiber
+
+        ui->retranslateUi(this);
     }
 
    // Update the checked menu item

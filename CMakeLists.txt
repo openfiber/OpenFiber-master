@@ -32,6 +32,7 @@ ENDIF()
 
 FILE(WRITE ${CMAKE_BINARY_DIR}/version.txt ${VERSION})
 
+
 # Files that make up the GUI version of OpenFiber
 
 SET(SOURCES
@@ -68,7 +69,7 @@ INCLUDE_DIRECTORIES(
 # Update the translation (.ts) files and generate the language (.qm) files
 # which will later on be embedded in the executable as resources
 
-UPDATE_LANGUAGE_FILES(${PROJECT_NAME} FALSE)
+UPDATE_LANGUAGE_FILES(${PROJECT_NAME} TRUE)
 
 # Set the application icon, but only for Windows, since in the case of
 # Linux, it's done through res/OpenFiber.qrc
