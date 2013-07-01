@@ -42,12 +42,19 @@ SET(SOURCES
     src/misc/cliapplication.cpp
     src/misc/common.cpp
     src/misc/utils.cpp
+
+    src/plugins/coreinterface.cpp
+    src/plugins/interface.cpp
+    src/plugins/plugin.cpp
+    src/plugins/plugininfo.cpp
+    src/plugins/pluginmanager.cpp
 )
 
 SET(HEADERS_MOC
     src/mainwindow.h
 
-    src/misc/utils.h
+    src/plugins/plugin.h
+    src/plugins/pluginmanager.h
 )
 
 SET(UIS

@@ -50,7 +50,7 @@ private:
 
 private slots:
     void on_actionFullScreen_triggered();
-    void on_actionExit_triggered();
+    //void on_actionExit_triggered();
     void on_actionSystem_triggered();
     void on_actionEnglish_triggered();
     void on_actionRussian_triggered();

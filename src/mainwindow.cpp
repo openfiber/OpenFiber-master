@@ -288,13 +288,6 @@ void MainWindow::notYetImplemented(const QString& message)
                          QMessageBox::Ok, QMessageBox::Ok);
 }
 
-void MainWindow::on_actionExit_triggered()
-{
-    // Exit OpenFiber
-
-    close();
-}
-
 void MainWindow::on_actionFullScreen_triggered()
 {
     // Switch to / back from full screen mode
