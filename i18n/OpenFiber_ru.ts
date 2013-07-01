@@ -36,28 +36,8 @@
         <translation>&amp;Английский</translation>
     </message>
     <message>
-        <source>Select English as the language to be used by OpenFiber</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>&amp;Russian</source>
         <translation>&amp;Русский</translation>
-    </message>
-    <message>
-        <source>Select Russian as the language to be used by OpenFiber</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Home &amp;Page</source>
-        <translation>&amp;Домашняя страница</translation>
-    </message>
-    <message>
-        <source>Open the OpenFiber home page</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>&amp;About...</source>
-        <translation>&amp;О программе...</translation>
     </message>
     <message>
         <source>Some general information about OpenFiber</source>
@@ -94,6 +74,73 @@
     <message>
         <source>Show/hide the status bar</source>
         <translation></translation>
+    </message>
+    <message>
+        <source>MainWindow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+Q</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select English as the language used by OpenFiber</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select Russian as the language used by OpenFiber</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Look up the OpenFiber help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>F1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Home &amp;page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Look up the OpenFiber home page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;About</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <source>Кгопка</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <source>нененененен</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> has not yet been implemented...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is a cross-platform modelling environment of cardiac fiber.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are about to reset &lt;strong&gt;all&lt;/strong&gt; of your settings. Do you wish to proceed?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Copyright</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

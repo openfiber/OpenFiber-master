@@ -78,6 +78,27 @@ IF(WIN32)
     LIST(APPEND SOURCES ${CMAKE_SOURCE_DIR}/res/${PROJECT_NAME}.rc)
 ENDIF()
 
+SET(PLUGINS
+    # Build the plugins which may be required by other plugins
+    # Note: the build order is very important...
+
+)
+
+FOREACH(PLUGIN ${PLUGINS})
+    SET(PLUGIN_DIR src/plugins/${PLUGIN})
+
+    ADD_SUBDIRECTORY(${PLUGIN_DIR})
+    # Note: this will process the CMakeLists.txt file of the plugin resulting in
+    #       PLUGIN_INCLUDE_DIRS being set, hence we can use it below to update
+    #       our include directories
+
+    FOREACH(PLUGIN_INCLUDE_DIR ${PLUGIN_INCLUDE_DIRS})
+        INCLUDE_DIRECTORIES(${PLUGIN_DIR}/${PLUGIN_INCLUDE_DIR})
+    ENDFOREACH()
+
+    INCLUDE_DIRECTORIES(build/${PLUGIN_DIR})
+ENDFOREACH()
+
 # Build the GUI version of OpenFiber
 
 QT5_WRAP_CPP(SOURCES_MOC ${HEADERS_MOC})

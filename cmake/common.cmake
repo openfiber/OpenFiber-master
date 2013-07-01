@@ -128,6 +128,246 @@ MACRO(UPDATE_LANGUAGE_FILES TARGET_NAME)
     ENDFOREACH()
 ENDMACRO()
 
+MACRO(ADD_PLUGIN PLUGIN_NAME)
+    # Various initialisations
+
+    SET(PLUGIN_NAME ${PLUGIN_NAME})
+
+    SET(SOURCES)
+    SET(HEADERS_MOC)
+    SET(UIS)
+    SET(INCLUDE_DIRS)
+    SET(DEFINITIONS)
+    SET(PLUGIN_DEPENDENCIES)
+    SET(PLUGIN_BINARY_DEPENDENCIES)
+    SET(QT_MODULES)
+    SET(QT_DEPENDENCIES)
+    SET(EXTERNAL_BINARY_DEPENDENCIES_DIR)
+    SET(EXTERNAL_BINARY_DEPENDENCIES)
+    SET(EXTERNAL_LIBRARY_DEPENDENCIES)
+    SET(TESTS)
+
+    # Analyse the extra parameters
+
+    SET(TYPE_OF_PARAMETER 0)
+
+    FOREACH(PARAMETER ${ARGN})
+        IF(${PARAMETER} STREQUAL "THIRD_PARTY")
+            # Add a definition in case of compilation from within Qt Creator
+            # using MSVC since JOM overrides some of our settings
+
+            IF(WIN32)
+                ADD_DEFINITIONS(-D_CRT_SECURE_NO_WARNINGS)
+            ENDIF()
+        ELSEIF(${PARAMETER} STREQUAL "SOURCES")
+            SET(TYPE_OF_PARAMETER 1)
+        ELSEIF(${PARAMETER} STREQUAL "HEADERS_MOC")
+            SET(TYPE_OF_PARAMETER 2)
+        ELSEIF(${PARAMETER} STREQUAL "UIS")
+            SET(TYPE_OF_PARAMETER 3)
+        ELSEIF(${PARAMETER} STREQUAL "INCLUDE_DIRS")
+            SET(TYPE_OF_PARAMETER 4)
+        ELSEIF(${PARAMETER} STREQUAL "DEFINITIONS")
+            SET(TYPE_OF_PARAMETER 5)
+        ELSEIF(${PARAMETER} STREQUAL "PLUGIN_DEPENDENCIES")
+            SET(TYPE_OF_PARAMETER 6)
+        ELSEIF(${PARAMETER} STREQUAL "PLUGIN_BINARY_DEPENDENCIES")
+            SET(TYPE_OF_PARAMETER 7)
+        ELSEIF(${PARAMETER} STREQUAL "QT_MODULES")
+            SET(TYPE_OF_PARAMETER 8)
+        ELSEIF(${PARAMETER} STREQUAL "QT_DEPENDENCIES")
+            SET(TYPE_OF_PARAMETER 9)
+        ELSEIF(${PARAMETER} STREQUAL "EXTERNAL_BINARY_DEPENDENCIES_DIR")
+            SET(TYPE_OF_PARAMETER 10)
+        ELSEIF(${PARAMETER} STREQUAL "EXTERNAL_BINARY_DEPENDENCIES")
+            SET(TYPE_OF_PARAMETER 11)
+        ELSEIF(${PARAMETER} STREQUAL "EXTERNAL_LIBRARY_DEPENDENCIES")
+            SET(TYPE_OF_PARAMETER 12)
+        ELSEIF(${PARAMETER} STREQUAL "TESTS")
+            SET(TYPE_OF_PARAMETER 13)
+        ELSE()
+            # Not one of the headers, so add the parameter to the corresponding
+            # set
+
+            IF(${TYPE_OF_PARAMETER} EQUAL 1)
+                LIST(APPEND SOURCES ${PARAMETER})
+            ELSEIF(${TYPE_OF_PARAMETER} EQUAL 2)
+                LIST(APPEND HEADERS_MOC ${PARAMETER})
+            ELSEIF(${TYPE_OF_PARAMETER} EQUAL 3)
+                LIST(APPEND UIS ${PARAMETER})
+            ELSEIF(${TYPE_OF_PARAMETER} EQUAL 4)
+                LIST(APPEND INCLUDE_DIRS ${PARAMETER})
+            ELSEIF(${TYPE_OF_PARAMETER} EQUAL 5)
+                LIST(APPEND DEFINITIONS ${PARAMETER})
+            ELSEIF(${TYPE_OF_PARAMETER} EQUAL 6)
+                LIST(APPEND PLUGIN_DEPENDENCIES ${PARAMETER})
+            ELSEIF(${TYPE_OF_PARAMETER} EQUAL 7)
+                LIST(APPEND PLUGIN_BINARY_DEPENDENCIES ${PARAMETER})
+            ELSEIF(${TYPE_OF_PARAMETER} EQUAL 8)
+                LIST(APPEND QT_MODULES ${PARAMETER})
+            ELSEIF(${TYPE_OF_PARAMETER} EQUAL 9)
+                LIST(APPEND QT_DEPENDENCIES ${PARAMETER})
+            ELSEIF(${TYPE_OF_PARAMETER} EQUAL 10)
+                SET(EXTERNAL_BINARY_DEPENDENCIES_DIR ${PARAMETER})
+            ELSEIF(${TYPE_OF_PARAMETER} EQUAL 11)
+                LIST(APPEND EXTERNAL_BINARY_DEPENDENCIES ${PARAMETER})
+            ELSEIF(${TYPE_OF_PARAMETER} EQUAL 12)
+                LIST(APPEND EXTERNAL_LIBRARY_DEPENDENCIES ${PARAMETER})
+            ELSEIF(${TYPE_OF_PARAMETER} EQUAL 13)
+                LIST(APPEND TESTS ${PARAMETER})
+            ENDIF()
+        ENDIF()
+    ENDFOREACH()
+
+    # Various include directories
+
+    SET(PLUGIN_INCLUDE_DIRS ${INCLUDE_DIRS} PARENT_SCOPE)
+
+    INCLUDE_DIRECTORIES(${INCLUDE_DIRS})
+
+    # Resource file, if any
+
+    SET(QRC_FILE res/${PLUGIN_NAME}.qrc)
+
+    IF(EXISTS ${PROJECT_SOURCE_DIR}/${QRC_FILE})
+        SET(RESOURCES ${QRC_FILE})
+    ELSE()
+        SET(RESOURCES)
+    ENDIF()
+
+    # Update the translation (.ts) files and generate the language (.qm) files
+    # which will later on be embedded in the plugin itself
+
+    IF(NOT "${RESOURCES}" STREQUAL "")
+        UPDATE_LANGUAGE_FILES(${PLUGIN_NAME})
+    ENDIF()
+
+    # Definition to make sure that the plugin can be used by other plugins
+
+    ADD_DEFINITIONS(-D${PLUGIN_NAME}_PLUGIN)
+
+    # Some plugin-specific definitions
+
+    FOREACH(DEFINITION ${DEFINITIONS})
+        ADD_DEFINITIONS(-D${DEFINITION})
+    ENDFOREACH()
+
+    # Generate and add the different files needed by the plugin
+
+    IF("${HEADERS_MOC}" STREQUAL "")
+        SET(SOURCES_MOC)
+    ELSE()
+        QT5_WRAP_CPP(SOURCES_MOC ${HEADERS_MOC})
+    ENDIF()
+
+    IF("${UIS}" STREQUAL "")
+        SET(SOURCES_UIS)
+    ELSE()
+        QT5_WRAP_UI(SOURCES_UIS ${UIS})
+    ENDIF()
+
+    IF("${RESOURCES}" STREQUAL "")
+        SET(SOURCES_RCS)
+    ELSE()
+        QT5_ADD_RESOURCES(SOURCES_RCS ${RESOURCES})
+    ENDIF()
+
+    ADD_LIBRARY(${PROJECT_NAME} SHARED
+        ${SOURCES}
+        ${SOURCES_MOC}
+        ${SOURCES_UIS}
+        ${SOURCES_RCS}
+    )
+
+    # OpenFiber dependencies
+
+    FOREACH(PLUGIN_DEPENDENCY ${PLUGIN_DEPENDENCIES})
+        TARGET_LINK_LIBRARIES(${PROJECT_NAME}
+            ${PLUGIN_DEPENDENCY}Plugin
+        )
+    ENDFOREACH()
+
+    # OpenFiber binary dependencies
+
+    FOREACH(PLUGIN_BINARY_DEPENDENCY ${PLUGIN_BINARY_DEPENDENCIES})
+        TARGET_LINK_LIBRARIES(${PROJECT_NAME}
+            ${PLUGIN_BINARY_DEPENDENCY}
+        )
+    ENDFOREACH()
+
+    # Qt modules
+
+    FOREACH(QT_MODULE ${QT_MODULES})
+        QT5_USE_MODULES(${PROJECT_NAME}
+            ${QT_MODULE}
+        )
+    ENDFOREACH()
+
+    # Linker settings
+
+    SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES
+        OUTPUT_NAME ${PLUGIN_NAME}
+        LINK_FLAGS "${LINK_FLAGS_PROPERTIES}"
+    )
+
+    # External binary dependencies
+
+    IF(NOT ${EXTERNAL_BINARY_DEPENDENCIES_DIR} STREQUAL "")
+        FOREACH(EXTERNAL_BINARY_DEPENDENCY ${EXTERNAL_BINARY_DEPENDENCIES})
+            TARGET_LINK_LIBRARIES(${PROJECT_NAME}
+                ${EXTERNAL_BINARY_DEPENDENCIES_DIR}/${EXTERNAL_BINARY_DEPENDENCY}
+            )
+        ENDFOREACH()
+    ENDIF()
+
+    # External library dependencies
+
+    FOREACH(EXTERNAL_LIBRARY_DEPENDENCY ${EXTERNAL_LIBRARY_DEPENDENCIES})
+        TARGET_LINK_LIBRARIES(${PROJECT_NAME}
+            ${EXTERNAL_LIBRARY_DEPENDENCY}
+        )
+    ENDFOREACH()
+
+    # Location of our plugins
+
+    IF(WIN32)
+        STRING(REPLACE "${${MAIN_PROJECT_NAME}_SOURCE_DIR}" "" PLUGIN_BUILD_DIR ${PROJECT_SOURCE_DIR})
+        SET(PLUGIN_BUILD_DIR "${CMAKE_BINARY_DIR}${PLUGIN_BUILD_DIR}")
+        # Note: MSVC generate things in a different place to GCC, so...
+    ELSE()
+        SET(PLUGIN_BUILD_DIR ${LIBRARY_OUTPUT_PATH})
+    ENDIF()
+
+    # Copy the plugin to our plugins directory
+    # Note: this is done so that we can, on Windows and Linux, test the use of
+    #       plugins in OpenFiber without first having to package OpenFiber...
+
+    SET(PLUGIN_FILENAME ${CMAKE_SHARED_LIBRARY_PREFIX}${PLUGIN_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX})
+
+    ADD_CUSTOM_COMMAND(TARGET ${PROJECT_NAME} POST_BUILD
+                       COMMAND ${CMAKE_COMMAND} -E copy ${PLUGIN_BUILD_DIR}/${PLUGIN_FILENAME}
+                                                        ${DEST_PLUGINS_DIR}/${PLUGIN_FILENAME})
+
+    # On Windows, make a copy of the plugin to our main build directory, since
+    # this is where it will be on Linux and OS X and where any test which
+    # requires the plugin will expect it to be, but this is not where MSVC
+    # generates the plugin, so...
+
+    IF(WIN32)
+        ADD_CUSTOM_COMMAND(TARGET ${PROJECT_NAME} POST_BUILD
+                           COMMAND ${CMAKE_COMMAND} -E copy ${PLUGIN_BUILD_DIR}/${PLUGIN_FILENAME}
+                                                            ${CMAKE_BINARY_DIR}/${PLUGIN_FILENAME})
+    ENDIF()
+
+    # Package the plugin itself, but only if we are not on OS X since it will
+    # have already been copied
+
+    IF(NOT APPLE)
+        INSTALL(FILES ${PLUGIN_BUILD_DIR}/${PLUGIN_FILENAME}
+                DESTINATION plugins/${MAIN_PROJECT_NAME})
+    ENDIF()
+ENDMACRO()
+
 MACRO(COPY_FILE_TO_BUILD_DIR ORIG_DIRNAME DEST_DIRNAME FILENAME)
     IF(EXISTS ${CMAKE_BINARY_DIR}/../cmake)
         # A CMake directory exists at the same level as the binary directory,
