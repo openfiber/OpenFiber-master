@@ -1,3 +1,5 @@
+#include "i18ninterface.h"
+#include "solverinterface.h"
 #include "pluginmanager.h"
 #include "mainwindow.h"
 #include "utils.h"
@@ -30,6 +32,11 @@ MainWindow::MainWindow(QWidget *parent) :
     // Create our settings object
 
     mSettings = new QSettings(SettingsOrganization, SettingsApplication);
+
+    // Create our plugin manager (which will automatically load our various
+    // plugins)
+
+    mPluginManager = new PluginManager(qApp);
 
     // Set up the GUI
 
@@ -69,7 +76,7 @@ MainWindow::MainWindow(QWidget *parent) :
         #error Unsupported platform
     #endif
 
-        ui->actionFullScreen->setShortcut(QKeySequence::FullScreen);
+        ui->actionFullScreen->setShortcut(QKeySequence::FullScreen);        
 
     // Retrieve our default settings
 
@@ -78,7 +85,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // Initialise the checked state of our full screen action, since OpenFiber may
     // (re)start in full screen mode
 
-    ui->actionFullScreen->setChecked(isFullScreen());
+    ui->actionFullScreen->setChecked(isFullScreen());    
 }
 
 //==============================================================================
@@ -91,7 +98,8 @@ MainWindow::~MainWindow()
 
     // Delete some internal objects
 
-    delete mSettings;
+   delete mPluginManager;
+   delete mSettings;
 
     // Delete the GUI
 

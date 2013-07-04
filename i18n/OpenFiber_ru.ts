@@ -111,14 +111,6 @@
         <source>&amp;About</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
-        <source>Кгопка</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <source>нененененен</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source> has not yet been implemented...</source>
         <translation type="unfinished"></translation>
@@ -140,6 +132,18 @@
     <name>QObject</name>
     <message>
         <source>Copyright</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ODE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DAE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>NLA</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

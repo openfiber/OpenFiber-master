@@ -44,10 +44,12 @@ SET(SOURCES
     src/misc/utils.cpp
 
     src/plugins/coreinterface.cpp
+    src/plugins/i18ninterface.cpp
     src/plugins/interface.cpp
     src/plugins/plugin.cpp
     src/plugins/plugininfo.cpp
     src/plugins/pluginmanager.cpp
+    src/plugins/solverinterface.cpp
 )
 
 SET(HEADERS_MOC

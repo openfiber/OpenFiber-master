@@ -9,6 +9,7 @@ class MainWindow;
 }
 
 class QSettings;
+class PluginManager;
 
 enum {
     NeedRestart = 1789
@@ -35,6 +36,8 @@ private:
     Ui::MainWindow *ui;
 
     QSettings *mSettings;
+
+    PluginManager *mPluginManager;
 
     QString mLocale;
 
