@@ -90,7 +90,7 @@ ENDIF()
 SET(PLUGINS
     # Build the plugins which may be required by other plugins
     # Note: the build order is very important...
-
+    3rdparty/SUNDIALS
 )
 
 FOREACH(PLUGIN ${PLUGINS})
