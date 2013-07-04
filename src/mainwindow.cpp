@@ -1,6 +1,8 @@
+#include "pluginmanager.h"
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
 #include "utils.h"
+
+#include "ui_mainwindow.h"
 
 #ifdef Q_WS_WIN
     #include <windows.h>
@@ -14,13 +16,11 @@
 #include <QSettings>
 #include <QUrl>
 
-//
-static const QString SettingsOrganization = "IIP";
-static const QString SettingsApplication = "OpenFiber";
-//
 static const QString SystemLocale  = "";
 static const QString EnglishLocale = "en";
 static const QString RussianLocale  = "ru";
+
+//==============================================================================
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -81,6 +81,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionFullScreen->setChecked(isFullScreen());
 }
 
+//==============================================================================
+
 MainWindow::~MainWindow()
 {
     // Keep track of our default settings
@@ -95,6 +97,8 @@ MainWindow::~MainWindow()
 
     delete ui;
 }
+
+//==============================================================================
 
 void MainWindow::changeEvent(QEvent *pEvent)
 {
@@ -169,12 +173,16 @@ void MainWindow::showEvent(QShowEvent *pEvent)
     }
 }
 
+//==============================================================================
+
 static const QString SettingsGlobal               = "Global";
 static const QString SettingsLocale               = "Locale";
 static const QString SettingsGeometry             = "Geometry";
 static const QString SettingsState                = "State";
 static const QString SettingsDockedWidgetsVisible = "DockedWidgetsVisible";
 static const QString SettingsStatusBarVisible     = "StatusBarVisible";
+
+//==============================================================================
 
 void MainWindow::loadSettings()
 {
@@ -207,6 +215,8 @@ void MainWindow::loadSettings()
         ui->statusBar->setVisible(mSettings->value(SettingsStatusBarVisible, true).toBool());
 }
 
+//==============================================================================
+
 void MainWindow::saveSettings() const
 {
     // Keep track of the language to be used by OpenFiber
@@ -219,6 +229,8 @@ void MainWindow::saveSettings() const
     mSettings->setValue(SettingsState, saveState());
 }
 
+//==============================================================================
+
 QString MainWindow::locale() const
 {
     // Return the current locale
@@ -227,6 +239,8 @@ QString MainWindow::locale() const
                QLocale::system().name().left(2):
                mLocale;
 }
+
+//==============================================================================
 
 void MainWindow::setLocale(const QString &pLocale, const bool &pForceSetting)
 {
@@ -279,6 +293,8 @@ void MainWindow::setLocale(const QString &pLocale, const bool &pForceSetting)
    ui->actionRussian->setChecked(!pLocale.compare(RussianLocale));
 }
 
+//==============================================================================
+
 void MainWindow::notYetImplemented(const QString& message)
 {
     // Display a warning message about a particular feature having not yet been
@@ -287,6 +303,8 @@ void MainWindow::notYetImplemented(const QString& message)
     QMessageBox::warning(this, qApp->applicationName(), message+tr(" has not yet been implemented..."),
                          QMessageBox::Ok, QMessageBox::Ok);
 }
+
+//==============================================================================
 
 void MainWindow::on_actionFullScreen_triggered()
 {
@@ -298,12 +316,16 @@ void MainWindow::on_actionFullScreen_triggered()
         showFullScreen();
 }
 
+//==============================================================================
+
 void MainWindow::on_actionSystem_triggered()
 {
     // Select the system's language as the language used by OpenFiber
 
     setLocale(SystemLocale, true);
 }
+
+//==============================================================================
 
 void MainWindow::on_actionEnglish_triggered()
 {
@@ -312,6 +334,8 @@ void MainWindow::on_actionEnglish_triggered()
     setLocale(EnglishLocale, true);
 }
 
+//==============================================================================
+
 void MainWindow::on_actionRussian_triggered()
 {
     // Select Russian as the language used by OpenFiber
@@ -319,12 +343,18 @@ void MainWindow::on_actionRussian_triggered()
     setLocale(RussianLocale, true);
 }
 
+//==============================================================================
+
 void MainWindow::on_actionHelp_triggered()
 {
     notYetImplemented("MainWindow::on_actionHelp_triggered");
 }
 
+//==============================================================================
+
 static const QString OpenfiberHomePageUrl = "https://github.com/openfiber";
+
+//==============================================================================
 
 void MainWindow::on_actionHomePage_triggered()
 {
@@ -332,6 +362,8 @@ void MainWindow::on_actionHomePage_triggered()
 
     QDesktopServices::openUrl(QUrl(OpenfiberHomePageUrl));
 }
+
+//==============================================================================
 
 void MainWindow::on_actionAbout_triggered()
 {
@@ -344,6 +376,8 @@ void MainWindow::on_actionAbout_triggered()
                        +"<a href=\""+QString(OpenfiberHomePageUrl)+"\"><strong>"+qApp->applicationName()+"</strong></a> "+tr("is a cross-platform modelling environment of cardiac fiber."));
 }
 
+//==============================================================================
+
 void MainWindow::restart(const bool &pSaveSettings) const
 {
     // Restart OpenFiber after saving its settings, if required
@@ -353,6 +387,8 @@ void MainWindow::restart(const bool &pSaveSettings) const
 
     qApp->exit(NeedRestart);
 }
+
+//==============================================================================
 
 void MainWindow::resetAll()
 {
@@ -372,3 +408,4 @@ void MainWindow::resetAll()
         restart(false);
     }
 }
+//==============================================================================

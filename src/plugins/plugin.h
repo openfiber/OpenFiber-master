@@ -15,9 +15,6 @@ static const QString SettingsPlugins = "Plugins";
 #elif defined(Q_OS_LINUX)
     static const QString PluginPrefix = "lib";
     static const QString PluginExtension = ".so";
-#elif defined(Q_OS_MAC)
-    static const QString PluginPrefix = "lib";
-    static const QString PluginExtension = ".dylib";
 #else
     #error Unsupported platform
 #endif
